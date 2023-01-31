@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:movie_search/domain/model/movie.dart';
 import 'package:movie_search/domain/model/movie_dto.dart';
 
 import '../../domain/repository/movie_api_repository.dart';

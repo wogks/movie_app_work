@@ -12,38 +12,54 @@ class MovieRepositoryImple implements MovieRepository {
   Future<List<Movie>> getResult() async {
     MovieDto movieDto = await _api.getMovieList();
 
-    final filterList = movieDto.results.map((e) {
+    if (movieDto.results == null) {
+      return [];
+    }
+
+    final filteredList = movieDto.results!
+        .where((element) => element.posterPath != null && element.backdropPath != null)
+        .map((e) {
       return Movie(
-          id: e.id,
-          adult: e.adult,
-          backdropPath: 'https://image.tmdb.org/t/p/w500${e.backdropPath}',
-          originalTitle: e.originalTitle,
-          overview: e.overview,
-          popularity: e.popularity,
-          posterPath: 'https://image.tmdb.org/t/p/w500${e.posterPath}',
-          releaseDate: e.releaseDate,
-          title: e.title,
-          voteAverage: e.voteAverage ?? 0);
+        id: e.id ?? 0,
+        adult: e.adult ?? false,
+        backdropPath: 'https://image.tmdb.org/t/p/w500${e.backdropPath}',
+        originalTitle: e.originalTitle ?? '',
+        overview: e.overview ?? '',
+        popularity: e.popularity ?? 0,
+        posterPath: 'https://image.tmdb.org/t/p/w500${e.posterPath}',
+        releaseDate: e.releaseDate ?? '',
+        title: e.title ?? '',
+        voteAverage: e.voteAverage ?? 0,
+      );
     }).toList();
-    return filterList;
+
+    return filteredList;
   }
 
   @override
   Future<List<Movie>> getSearchResult(String query) async {
     final movieDto = await _api.getSearchMovieList(query);
-    return movieDto.results.map((e) {
-      return Movie(
-          id: e.id,
-          adult: e.adult,
+
+    if (movieDto.results == null) {
+      return [];
+    }
+
+    return movieDto.results!.where((element) => element.posterPath != null && element.backdropPath != null).map(
+      (e) {
+        return Movie(
+          id: e.id ?? 0,
+          adult: e.adult ?? false,
           backdropPath: 'https://image.tmdb.org/t/p/w500${e.backdropPath}',
-          originalTitle: e.originalTitle,
-          overview: e.overview,
-          popularity: e.popularity,
+          originalTitle: e.originalTitle ?? '',
+          overview: e.overview ?? '',
+          popularity: e.popularity ?? 0,
           posterPath: 'https://image.tmdb.org/t/p/w500${e.posterPath}',
-          releaseDate: e.releaseDate,
-          title: e.title,
-          voteAverage: e.voteAverage ?? 0);
-    }).toList();
+          releaseDate: e.releaseDate ?? '',
+          title: e.title ?? '',
+          voteAverage: e.voteAverage ?? 0,
+        );
+      },
+    ).toList();
   }
 
   @override

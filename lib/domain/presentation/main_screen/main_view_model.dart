@@ -12,6 +12,13 @@ class MainViewModel extends ChangeNotifier {
   List<Movie> sortedByTitle = [];
   List<Movie> sortedByVoteAverage = [];
   List<Movie> sortedByRealseDate = [];
+  MainViewModel() {
+    getList();
+    getSortedListByTitle();
+    getSortedByAverage();
+    getSortedByRealseDate();
+    notifyListeners();
+  }
 
   Future getList() async {
     movieList = await repository.getResult();
